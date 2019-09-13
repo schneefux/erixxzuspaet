@@ -22,8 +22,9 @@ async function main() {
   const updates = allUpdates.filter(text => {
     // TODO filter by bhfvonid & bhvfnachid
     const hotPhrases = process.env.HOT_PHRASES.split(',')
+    const coldPhrases = process.env.COLD_PHRASES.split(',')
     const matches = hotPhrases.filter(phrase => text.includes(phrase)).length
-    return matches >= +process.env.HOT_PHRASE_THRESHOLD
+    return matches >= +process.env.HOT_PHRASE_THRESHOLD && coldPhrases.every(phrase => !text.includes(phrase))
   })
   const newUpdates = updates.filter(update => !lastUpdates.includes(update))
   for (const update of newUpdates) {
